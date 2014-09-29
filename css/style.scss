@@ -1,0 +1,81 @@
+@import '_colours.scss';
+
+@import url(http://fonts.googleapis.com/css?family=Open+Sans);
+
+body{
+	background: $red-background;
+	width:1000px;
+	color: #fff;
+	font-family: 'Open Sans', sans-serif;
+	margin: 0 auto;
+}
+
+#welcome{
+	margin: 0 auto;
+	width:100%;
+	text-align: center;
+}
+
+#welcome-enter-name{
+	width:50%;
+	text-align: center;
+	margin:0 auto;
+}
+
+#welcome-message{
+	width:100%;
+}
+
+input{
+	font-size: 1.4em;
+	line-height: 1.8em;
+	border: 1px;
+	border-radius: 10px;
+	padding: 0 0.7em;
+	box-shadow: 0 2px 1px 1px #9B1313;
+	width: 60%;
+	background: #FFE4E4;
+	display: block;
+	margin: 1em auto;
+	color: #725353;
+	text-align: center;
+}
+
+button{
+	-moz-box-shadow:inset 0px 0px 0px 0px #f5a9a9;
+	-webkit-box-shadow:inset 0px 0px 0px 0px #f5a9a9;
+	box-shadow:inset 0px 0px 0px 0px #f5a9a9;
+	background-color:transparent;
+	-webkit-border-top-left-radius:13px;
+	-moz-border-radius-topleft:13px;
+	border-top-left-radius:13px;
+	-webkit-border-top-right-radius:13px;
+	-moz-border-radius-topright:13px;
+	border-top-right-radius:13px;
+	-webkit-border-bottom-right-radius:13px;
+	-moz-border-radius-bottomright:13px;
+	border-bottom-right-radius:13px;
+	-webkit-border-bottom-left-radius:13px;
+	-moz-border-radius-bottomleft:13px;
+	border-bottom-left-radius:13px;
+	text-indent:0;
+	border:1px solid #ffffff;
+	display:inline-block;
+	color:#ffffff;
+	font-size:19px;
+	font-weight:bold;
+	font-style:normal;
+	height:43px;
+	line-height:43px;
+	width:184px;
+	text-decoration:none;
+	text-align:center;
+}button:active {
+	position:relative;
+	top:1px;
+}
+
+h1{
+	font-size: 14em;
+	margin-bottom: 0em;
+}

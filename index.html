@@ -1,0 +1,153 @@
+<html>
+	<head>
+
+	</head>
+	<body>
+		<section id="welcome">
+			<div id="welcome-enter-name">
+				<h2>What is your name?</h2>
+				<input id="welcome-name" type="text" name="What is your name">
+				<button onclick="submitName();" value="Submit">Submit</button>
+			</div>
+			<div id="welcome-message" style="display:none">
+				<h1>Hello </h1>
+				<p class="continue">Continue...</p>
+			</div>
+		</section>
+
+		<section id="target" style="display:none;">
+			<h3>How far do you want to run?</h3>
+			<input id="target-distance" type="text" name="How far do you want to run">
+			<input id="target-unit" type="radio" name="distance" value="km">
+			<input id="target-unit" type="radio" name="distance" value="miles">
+			<input id="target-unit" type="radio" name="distance" value="metres">
+
+
+			<h3>How quickly?</h3>
+			<input id="target-time-hours" type="text" name="Hours" value="0">
+			<input id="target-time-minutes" type="text" name="Minutes" value="0">
+
+			<button onclick="submitTarget();" value="Submit">Submit</button>
+
+		</section>
+
+		<section id="results" style="display:none;">
+			<div id="results-distance">Distance: </div>
+			<div id="results-time">Time: </div>
+			<div id="results-speed">Speed: </div>
+			<div id="results-timePerUnit">Time per </div>
+
+		</section>
+
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+		<script>
+			var userName;
+
+			function submitName(){
+				userName = document.getElementById('welcome-name').value;
+				$("#welcome-message h1").append(userName);
+				$("#welcome-enter-name").hide();
+				$("#welcome-message").show();
+
+				// localStorage.setItem("localName", JSON.stringify(userName)); PUT BACK IN LATER
+			}
+
+			function submitTarget(){
+				userDistance = document.getElementById('target-distance').value;
+				userTimeHours = document.getElementById('target-time-hours').value;
+				userTimeMinutes = document.getElementById('target-time-minutes').value;
+				userDistanceUnit = document.getElementById('target-unit').value;
+				$('#target').hide();
+				$('#results').show();
+
+				timeMinsToHours = userTimeMinutes / 60;
+				totalTime = parseFloat(userTimeHours) + parseFloat(timeMinsToHours);
+
+				var speed = userDistance / totalTime;
+				$('#results-speed').append(speed + userDistanceUnit + '/h');
+
+				$('#results-distance').append(userDistance + userDistanceUnit);
+				$('#results-time').append(userTimeHours + 'h ').append(userTimeMinutes + 'mins');
+
+				var timePerUnit = (totalTime / userDistance) * 60;
+				$('#results-timePerUnit').append(userDistanceUnit + ': ' + timePerUnit + ' minutes');
+
+
+			}
+
+			// Continue
+
+			$('.continue').click(function(){
+				$('#welcome').hide();
+				$('#target').show();
+			});
+
+
+
+
+		</script>
+<link rel="stylesheet" type="text/css" href="css/style.css"></link>
+
+
+
+
+
+
+
+
+
+
+<!-- 		<input id="thing" type="text" name="something">
+		<button onclick="submitFunction();" value="Submit">Submit</button>
+		<button onclick="resetFunction();" value="Reset">Reset</button>
+
+		<ul id="blah"></ul> -->
+
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<script>
+
+		// 	var localarray;
+		// 	var array = [];
+		// 	var x = 0;
+		// 	var fullArray;
+		// 	var localArrayRetrieved;
+		// 	function submitFunction(){
+				
+		// 		var thing = document.getElementById('thing').value;
+		// 		array.push(thing);
+		// 		document.getElementById('blah').innerHTML += '<li>' + array[x] + '</li>';
+		// 		x++;
+
+		// 		if (typeof(localArrayRetrieved) != 'undefined'){
+		// 			fullArray = localArrayRetrieved.concat(array);
+		// 		} else {
+		// 			fullArray = array;
+		// 		}
+
+		// 		localStorage.setItem("localarray", JSON.stringify(fullArray));
+		// 		$('#thing').val("");
+		// 	}
+
+		// 	if (typeof(Storage) != "undefined") {
+		// 		if (typeof(localStorage.localarray) != "undefined"){
+		// 			localArrayRetrieved = JSON.parse(localStorage.localarray);
+		// 			for (i = 0; i < localArrayRetrieved.length; i++){
+		// 				document.getElementById('blah').innerHTML += '<li>' + localArrayRetrieved[i] + '</li>';
+		// 			}
+		// 		}
+
+		// 	} else {
+		// 	    document.getElementById("result").innerHTML = "Sorry, your browser does not support Web Storage...";
+		// 	}
+
+		// 	var resetFunction = function(){
+		// 		localStorage.clear();
+		// 		array.length = 0;
+		// 		$('#blah').empty();
+		// 		x = 0;
+		// 	}
+
+		// </script>
+	</body>
+</html>
