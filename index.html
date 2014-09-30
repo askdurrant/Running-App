@@ -1,52 +1,108 @@
 <html>
 	<head>
-
+		<link rel="stylesheet" type="text/css" href="css/style.css"></link>
+		<link rel="stylesheet" type="text/css" href="fonts/font-awesome/css/font-awesome.min.css"></link>
 	</head>
 	<body>
-		<section id="welcome">
-			<div id="welcome-enter-name">
-				<h2>What is your name?</h2>
-				<input id="welcome-name" type="text" name="What is your name">
-				<button onclick="submitName();" value="Submit">Submit</button>
-			</div>
-			<div id="welcome-message" style="display:none">
-				<h1>Hello </h1>
-				<p class="continue">Continue...</p>
-			</div>
-		</section>
+		<header>
+			<h1>RunneRound</h1>
+			<hr />
+		</header>
+		<div class="container">
+			<section id="welcome">
+				<div id="welcome-enter-name">
+					<h3>What is your name?</h3>
+					<input id="welcome-name" type="text" name="What is your name" placeholder="What is your name?">
+					<button onclick="submitName();" value="Submit">Submit</button>
+				</div>
+				<div id="welcome-message" style="display:none">
+					<h2>Hello<br/></h2>
+					<p class="continue">Continue...</p>
+				</div>
+			</section>
 
-		<section id="target" style="display:none;">
-			<h3>How far do you want to run?</h3>
-			<input id="target-distance" type="text" name="How far do you want to run">
-			<input id="target-unit" type="radio" name="distance" value="km">
-			<input id="target-unit" type="radio" name="distance" value="miles">
-			<input id="target-unit" type="radio" name="distance" value="metres">
+			<section id="target" style="display:none;">
+				<div id="target-how-far">
+					<h4>How far do you want to run?</h4>
+					<div id="target-distance-container">
+						<input id="target-distance" type="text" name="How far do you want to run" value="0">
+						<div id="target-radio">
+							<input id="km" type="radio" name="distance" value="km">
+								<label for="km"><img src="images/km.png" alt="km"></label>
+							<input id="miles" type="radio" name="distance" value="miles">
+								<label for="miles"><img src="images/miles.png" alt="Miles"></label>
+							<input id="m" type="radio" name="distance" value="metres">
+								<label for="m"><img src="images/metres.png" alt="Metres"></label>
+						</div>
+					</div>
+				</div>
+				<div id="target-how-quickly">
+					<h4>How quickly?</h4>
+					<div class="targets">
+						<input id="target-time-hours" type="text" name="Hours" placeholder="What is your name?" value="0"> 
+						<div class="time">Hours</div>
+					</div>
+					<div class="targets">
+						<input id="target-time-minutes" type="text" name="Minutes" placeholder="What is your name?" value="0"> 
+						<div class="time">Minutes</div>
+					</div>
+				</div>
 
+				<button onclick="submitTarget();" value="Submit">Submit</button>
 
-			<h3>How quickly?</h3>
-			<input id="target-time-hours" type="text" name="Hours" value="0">
-			<input id="target-time-minutes" type="text" name="Minutes" value="0">
+			</section>
 
-			<button onclick="submitTarget();" value="Submit">Submit</button>
+			<section id="results" style="display:none;">
 
-		</section>
+				<div class="results-column">
+					<div id="results-distance" class="results-stats"><i class="fa fa-arrows-h"></i> Distance: </div>
+					<div id="results-time" class="results-stats"><i class="fa fa-clock-o"></i> Time: </div>
+					<div id="results-speed" class="results-stats"><i class="fa fa-tachometer"></i> Speed: </div>
+					<div id="results-timePerUnit" class="results-stats"><i class="fa fa-line-chart"></i> Time per </div>
+				</div>
 
-		<section id="results" style="display:none;">
-			<div id="results-distance">Distance: </div>
-			<div id="results-time">Time: </div>
-			<div id="results-speed">Speed: </div>
-			<div id="results-timePerUnit">Time per </div>
+				<div class="hr-vertical"></div>
 
-		</section>
+				<div class="results-column">
+					<div id="results-times-list-container">
+						<ul id="user-times-list">
+						</ul>
+					</div>
+					<div id="results-buttons">
+						<input id="results-user-time" type="text" placeholder="Enter Time">
+						<button onclick="submitSaveTimes();" value="Submit">Submit</button>
+					</div>
+				</div>
+			</section>
+			<section id="graph" style="display:none;">
+				<h5>Graph Your Runs!</h5>
+				<p class="p-graph"><b>Add times for 2 runs to see your graph!</b></p>
+				<canvas id="runningChart"></canvas>
+			</section>
+			
+	
+		</div>
 
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 
-		<script>
+		
+
+<!-- 		<input id="thing" type="text" name="something">
+		<button onclick="submitFunction();" value="Submit">Submit</button>
+		<button onclick="resetFunction();" value="Reset">Reset</button>
+
+		<ul id="blah"></ul> -->
+
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/themes/smoothness/jquery-ui.css" />
+	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js"></script>
+	<script src="Chart.js"></script>
+	<script>
 			var userName;
 
 			function submitName(){
 				userName = document.getElementById('welcome-name').value;
-				$("#welcome-message h1").append(userName);
+				$("#welcome-message h2").append(userName);
 				$("#welcome-enter-name").hide();
 				$("#welcome-message").show();
 
@@ -57,9 +113,31 @@
 				userDistance = document.getElementById('target-distance').value;
 				userTimeHours = document.getElementById('target-time-hours').value;
 				userTimeMinutes = document.getElementById('target-time-minutes').value;
-				userDistanceUnit = document.getElementById('target-unit').value;
+				userDistanceUnitKM = document.getElementById('km').value;
+				userDistanceUnitMile = document.getElementById('miles').value;
+				userDistanceUnitM = document.getElementById('m').value;
+
+				console.log(userDistanceUnitKM);
+				console.log(userDistanceUnitMile);
+				console.log(userDistanceUnitM);
+
+				// NEEEED TO FIX!!
+
+				if (typeof userDistanceUnitKM != undefined){
+					userDistanceUnit = userDistanceUnitKM;
+				}
+				else if (typeof userDistanceUnitMile != undefined){
+					userDistanceUnit = userDistanceUnitMile;
+				}
+				else if (typeof userDistanceUnitM != undefined){
+					userDistanceUnit = userDistanceUnitM;
+				}
+
+
 				$('#target').hide();
 				$('#results').show();
+				$('#graph').show();
+				$('body').css('-webkit-animation', 'changeColour2 1s').css('background', '#DD9050');
 
 				timeMinsToHours = userTimeMinutes / 60;
 				totalTime = parseFloat(userTimeHours) + parseFloat(timeMinsToHours);
@@ -71,42 +149,134 @@
 				$('#results-time').append(userTimeHours + 'h ').append(userTimeMinutes + 'mins');
 
 				var timePerUnit = (totalTime / userDistance) * 60;
-				$('#results-timePerUnit').append(userDistanceUnit + ': ' + timePerUnit + ' minutes');
-
-
+				var timePerUnitFixed = timePerUnit.toFixed(2);
+				$('#results-timePerUnit').append(userDistanceUnit + ': ' + timePerUnitFixed + ' minutes');
 			}
+
+			var i=0;
+			var labelArray = [];
+			var userTimesArray = [];345
+			function submitSaveTimes(){
+				userTimes = document.getElementById('results-user-time').value;
+				userTimesArray.push(userTimes);
+				console.log(userTimesArray);
+				document.getElementById('user-times-list').innerHTML += '<li>' + userTimesArray[i] + '</li>';
+				i++;
+				labelArray.push(i);
+				$('#results-user-time').val("");
+
+				drawChart();
+				return userTimesArray;
+			}
+
 
 			// Continue
 
 			$('.continue').click(function(){
 				$('#welcome').hide();
 				$('#target').show();
+				$('body').css('-webkit-animation', 'changeColour 1s').css('background', '#308585');
 			});
 
 
+			//Radio Buttons
 
+			$('#target-radio input:radio').addClass('input_hidden');
+			$('#target-radio label').click(function() {
+			    $(this).addClass('selected').siblings().removeClass('selected');
+			});
+
+
+			//GRAPH
+			
+			var graphLabel;
+
+			var ctx = document.getElementById("runningChart").getContext("2d");
+			
+			var data = {
+			    labels: labelArray,
+			    datasets: [
+			        {
+			            label: "Running Times",
+			            fillColor: "rgba(220,220,220,0.2)",
+			            strokeColor: "rgba(220,220,220,1)",
+			            pointColor: "rgba(220,220,220,1)",
+			            pointStrokeColor: "#fff",
+			            pointHighlightFill: "#fff",
+			            pointHighlightStroke: "rgba(220,220,220,1)",
+			            data: userTimesArray
+			        }
+			    ]
+			};
+
+
+			var options ={
+
+			    ///Boolean - Whether grid lines are shown across the chart
+			    scaleShowGridLines : true,
+
+			    //String - Colour of the grid lines
+			    scaleGridLineColor : "rgba(255,255,255,.08)",
+
+			    //Number - Width of the grid lines
+			    scaleGridLineWidth : 1,
+
+			    //Boolean - Whether the line is curved between points
+			    bezierCurve : true,
+
+			    //Number - Tension of the bezier curve between points
+			    bezierCurveTension : 0.4,
+
+			    //Boolean - Whether to show a dot for each point
+			    pointDot : true,
+
+			    //Number - Radius of each point dot in pixels
+			    pointDotRadius : 4,
+
+			    //Number - Pixel width of point dot stroke
+			    pointDotStrokeWidth : 1,
+
+			    //Number - amount extra to add to the radius to cater for hit detection outside the drawn point
+			    pointHitDetectionRadius : 20,
+
+			    //Boolean - Whether to show a stroke for datasets
+			    datasetStroke : true,
+
+			    //Number - Pixel width of dataset stroke
+			    datasetStrokeWidth : 2,
+
+			    //Boolean - Whether to fill the dataset with a colour
+			    datasetFill : true,
+
+			    responsive: true,
+
+			    scaleLineColor: "rgba(255,255,255,.8)",
+
+			    scaleFontColor: "#fff",
+
+			    tooltipFontFamily: "Open Sans",
+
+			    tooltipFontSize: 16,
+
+			};
+
+			function drawChart(){
+				if(labelArray.length > 1){
+					$('#p-graph').hide();
+					var myLineChart = new Chart(ctx).Line(data, options);
+				}
+			}
+
+			
+		
 
 		</script>
-<link rel="stylesheet" type="text/css" href="css/style.css"></link>
 
 
 
 
 
-
-
-
-
-
-<!-- 		<input id="thing" type="text" name="something">
-		<button onclick="submitFunction();" value="Submit">Submit</button>
-		<button onclick="resetFunction();" value="Reset">Reset</button>
-
-		<ul id="blah"></ul> -->
-
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-	<script>
-
+<script>
 		// 	var localarray;
 		// 	var array = [];
 		// 	var x = 0;
@@ -148,6 +318,7 @@
 		// 		x = 0;
 		// 	}
 
-		// </script>
+		// 
+</script>
 	</body>
 </html>
