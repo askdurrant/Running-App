@@ -60,6 +60,9 @@ h1 {
   margin: 0em;
   font-family: 'Lobster', cursive;
   text-align: center; }
+  h1 a {
+    text-decoration: none;
+    color: #ffffff; }
 
 h2 {
   font-size: 12em;
@@ -96,6 +99,15 @@ section {
 .container {
   width: 1000px;
   margin: 0 auto; }
+
+#forget {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 1em;
+  width: 8%;
+  font-size: 1em;
+  line-height: 1em; }
 
 .hr-vertical {
   border-left: 1px solid #fff;

@@ -1,7 +1,7 @@
 // VARIABLES
 
 var userName;
-var i=0;
+var i = 0;
 var labelArray = [];
 var userDateArray = [];
 var userTimesArray = [];
@@ -11,25 +11,59 @@ var localName;
 var userTimesArrayEdited;
 
 
+//LOCAL
+var localNameRet;
+var localDistanceRet;
+var localTimeHoursRet;
+var localTimeMinutesRet;
+var localDistanceRet;
+
+
+$('#target').hide();
+$('#results').hide();
+$('#graph').hide();
+
 // ENTER AND STORE NAME
 
-function submitName(){
-  userName = document.getElementById('welcome-name').value;
-  if (userName == ""){
-    $('#welcome-name').addClass('required');
-  }
-  else{
-    console.log(userName);
-    $("#welcome-message h2").append(userName);
-    $("#welcome-enter-name").hide();
-    $("#welcome-message").show();
-    localStorage.setItem("localName", userName);
-    console.log(localStorage.localName);
+if (typeof(localStorage.localName) != "undefined"){
+  localNameRet = localStorage.localName;
+  $("#welcome-message h2").append(localNameRet);
+  $("#welcome-enter-name").hide();
+  $("#welcome-message").show();
+}
+else{
+  function submitName(){
+    userName = document.getElementById('welcome-name').value;
+    if (userName == ""){
+      $('#welcome-name').addClass('required');
+    }
+    else{
+      $("#welcome-message h2").append(userName);
+      $("#welcome-enter-name").hide();
+      $("#welcome-message").show();
+      localStorage.setItem("localName", userName);
+    }
   }
 }
 
 
 // TARGET VIEW - SUBMIT DATA
+function targetView(){
+if (typeof(localStorage.localDistance) != "undefined" && typeof(localStorage.localTimeHours) != "undefined" && typeof(localStorage.localTimeMinutes) != "undefined" && typeof(localStorage.localDistanceUnit) != "undefined"){
+  localDistanceRet = localStorage.localDistance;
+  localTimeHoursRet = localStorage.localTimeHours;
+  localTimeMinutesRet = localStorage.localTimeMinutes;
+  localDistanceRet = localStorage.localDistanceUnit;
+
+  $('#target').hide();
+  $('#results').show();
+  $('#graph').show();
+  $('body').css('-webkit-animation', 'changeColour2 1s').css('background', '#DD9050');
+  }
+  else{
+    return false;
+  }
+}
 
 function submitTarget(){
   userDistance = document.getElementById('target-distance').value;
@@ -39,11 +73,6 @@ function submitTarget(){
 
   timeMinsToHours = userTimeMinutes / 60;
   totalTime = parseFloat(userTimeHours) + parseFloat(timeMinsToHours);
-
-  console.log(userDistanceUnit);
-  console.log(userDistance);
-  console.log(totalTime);
-
 
   $('#target-distance').removeClass('required');
   $('#target-time-hours').removeClass('required');
@@ -80,8 +109,13 @@ function submitTarget(){
     var timePerUnit = (totalTime / userDistance) * 60;
     var timePerUnitFixed = timePerUnit.toFixed(2);
     $('#results-timePerUnit').append(userDistanceUnit + ': ' + timePerUnitFixed + ' minutes');
+
+    localStorage.setItem("localDistance", userDistance);
+    localStorage.setItem("localTimeHours", userTimeHours);
+    localStorage.setItem("localTimeMinutes", userTimeMinutes);
+    localStorage.setItem("localDistanceUnit", userDistanceUnit);
   }
-};
+}
 
 
 // SUBMIT TIMES
@@ -97,7 +131,6 @@ function submitSaveTimes(){
 
   userTimes = parseFloat(parseFloat(userTimesHourInMins) + parseFloat(userTimesMin) + '.' + userTimesSec);
   userTimeForList = userTimesHour + ':' + userTimesMin + ':' + userTimesSec;
-  console.log(userTimes);
 
   $('#target-distance').removeClass('required');
   $('#target-time-hours').removeClass('required');
@@ -116,14 +149,26 @@ function submitSaveTimes(){
     labelArray.push(i);
 
     $('#datepicker').val("");
-    $('#results-user-time').val("");
-
-    drawChart();
-    return userTimesArray;
+    $('#results-user-time-hour').val("");
+    $('#results-user-time-min').val("");
+    $('#results-user-time-sec').val("");
 
     $('#target-distance').removeClass('required');
     $('#target-time-hours').removeClass('required');
     $('#target-time-minutes').removeClass('required');
+
+
+    localStorage.setItem("localDateArray", userDateArray);
+    console.log(localStorage.localDateArray);   
+
+    localStorage.setItem("localTimesArrayList", userTimesArrayList);
+    console.log(localStorage.localTimesArrayList);   
+
+    localStorage.setItem("localTimesArray", userTimesArray);
+    console.log(localStorage.localTimesArray); 
+
+    drawChart();
+    return userTimesArray;
 
   }
   else{
@@ -191,14 +236,13 @@ function graphTimes(){
 };
 
 
-//CHECKS NO. OF TIMES AND CALLS graphTIMES
+//Checks no. of times and calls graphTimes
 function drawChart(){
   if(labelArray.length > 1){
     $('#p-graph').hide();
     graphTimes();
   }
 }
-
 
 //Date Picker
       
@@ -213,6 +257,7 @@ $('.continue').click(function(){
   $('#welcome').hide();
   $('#target').show();
   $('body').css('-webkit-animation', 'changeColour 1s').css('background', '#308585');
+  targetView();
 });
 
 
@@ -223,3 +268,24 @@ $('#target-radio label').click(function() {
     $(this).addClass('selected').siblings().removeClass('selected');
 });
 
+
+
+
+if (typeof(Storage) != "undefined") {
+  if (typeof(localStorage.localarray) != "undefined"){
+    localArrayRetrieved = JSON.parse(localStorage.localarray);
+    for (i = 0; i < localArrayRetrieved.length; i++){
+      document.getElementById('blah').innerHTML += '<li>' + localArrayRetrieved[i] + '</li>';
+    }
+  }
+
+} else {
+    document.getElementById("result").innerHTML = "Sorry, your browser does not support Web Storage...";
+}
+
+// CLEAR ALLLLLLLLLLLLLLLLLL
+
+var clearFunction = function(){
+  localStorage.clear();
+  i = 0;
+}
