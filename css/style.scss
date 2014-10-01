@@ -9,6 +9,7 @@ body{
 	color: #fff;
 	font-family: 'Open Sans', sans-serif;
 	margin: 0 auto;
+	-webkit-font-smoothing: antialiased;
 }
 
 input{
@@ -65,7 +66,6 @@ h1{
 	margin: 0em;
 	font-family: 'Lobster', cursive;
 	text-align: center;
-	-webkit-font-smoothing: antialiased;
 }
 
 h2{
@@ -246,9 +246,9 @@ section{
 	box-shadow: 0 2px 1px 1px #9B1313;
 	width: 80%;
 	margin: 0 auto;
-	background: -webkit-linear-gradient(0deg, transparent 79px, #abced4 79px, #abced4 81px, transparent 81px), -webkit-linear-gradient(90deg, #DBDBDB 0.1em, transparent 0.1em), white;
-	background: -moz-linear-gradient(90deg, transparent 79px, #abced4 79px, #abced4 81px, transparent 81px), -moz-linear-gradient(0deg, #DBDBDB 0.1em, transparent 0.1em), white;
-	background: linear-gradient(90deg, transparent 79px, #abced4 79px, #abced4 81px, transparent 81px), linear-gradient(0deg, #DBDBDB 0.1em, transparent 0.1em), white;
+	background: -webkit-linear-gradient(0deg, transparent 107px, #abced4 110px, #abced4 81px, transparent 81px), -webkit-linear-gradient(90deg, #DBDBDB 0.1em, transparent 0.1em), white;
+	background: -moz-linear-gradient(90deg, transparent 107px, #abced4 110px, #abced4 81px, transparent 81px), -moz-linear-gradient(0deg, #DBDBDB 0.1em, transparent 0.1em), white;
+	background: linear-gradient(90deg, transparent 107px, #abced4 110px, #abced4 81px, transparent 81px), linear-gradient(0deg, #DBDBDB 0.1em, transparent 0.1em), white;
 	background-position: auto auto;
 	-webkit-background-origin: padding-box;
 	background-origin: padding-box;
@@ -262,14 +262,15 @@ section{
 	width:100%;
 	display:block;
 	button{
-		margin: 6%;
-		width:25%;
-		margin:1em;
+		width: 40%;
+		margin: 0 auto;
+		display: block;
+		margin-bottom: 10px;
 	}
 	input{
 		width: 40%;
 		display: inline-block;
-		margin-left: 16%;
+		margin: 4.8%;
 	}
 }
 
@@ -278,10 +279,12 @@ section{
 	padding: 0.5em 0.1em
 }
 
-#user-times-list{
+.user-list{
 	color: #725353;
 	font-family: 'Lobster', cursive;
-	padding: 1em 6em;
+	padding: 1em 0;
+	display: inline-block;
+	float: left;
 	li{
 		list-style: none;
 		margin: 0.2em 0;
@@ -290,11 +293,37 @@ section{
 	}
 }
 
+#user-date-list{
+	width:25%;
+	li{
+		text-align: right;
+	}
+}
+
+#user-times-list{
+	width:75%;
+	li{
+		text-align: center;
+	}
+}
+
+#results-buttons .time-inputs{
+	width: 13%;
+	margin:1%;
+}
+
 
 /* GRAPH */
 
 #graph{
 
+}
+
+
+/* Required */
+
+.required{
+	background: #FFAEAE;
 }
 
 /* ANIMATIONS */

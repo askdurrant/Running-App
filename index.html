@@ -27,11 +27,11 @@
 					<div id="target-distance-container">
 						<input id="target-distance" type="text" name="How far do you want to run" value="0">
 						<div id="target-radio">
-							<input id="km" type="radio" name="distance" value="km">
-								<label for="km"><img src="images/km.png" alt="km"></label>
-							<input id="miles" type="radio" name="distance" value="miles">
+							<input id="km" type="radio" class="radio" name="distance" value="km" checked>
+								<label for="km" class="selected"><img src="images/km.png" alt="km"></label>
+							<input id="miles" type="radio" class="radio" name="distance" value="miles">
 								<label for="miles"><img src="images/miles.png" alt="Miles"></label>
-							<input id="m" type="radio" name="distance" value="metres">
+							<input id="m" type="radio" class="radio" name="distance" value="m">
 								<label for="m"><img src="images/metres.png" alt="Metres"></label>
 						</div>
 					</div>
@@ -65,18 +65,23 @@
 
 				<div class="results-column">
 					<div id="results-times-list-container">
-						<ul id="user-times-list">
+						<ul id="user-date-list" class="user-list">
+						</ul>
+						<ul id="user-times-list" class="user-list">
 						</ul>
 					</div>
 					<div id="results-buttons">
-						<input id="results-user-time" type="text" placeholder="Enter Time">
+						<input type="text" id="datepicker" placeholder="Date">
+						<input id="results-user-time-hour" type="text" class="time-inputs" placeholder="hh" value="00">:
+						<input id="results-user-time-min" type="text" class="time-inputs" placeholder="mm" value="00">:
+						<input id="results-user-time-sec" type="text" class="time-inputs" placeholder="ss" value="00">
 						<button onclick="submitSaveTimes();" value="Submit">Submit</button>
 					</div>
 				</div>
 			</section>
 			<section id="graph" style="display:none;">
 				<h5>Graph Your Runs!</h5>
-				<p class="p-graph"><b>Add times for 2 runs to see your graph!</b></p>
+				<p id="p-graph"><b>Add times for 2 runs to see your graph!</b></p>
 				<canvas id="runningChart"></canvas>
 			</section>
 			
@@ -96,229 +101,9 @@
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 	<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/themes/smoothness/jquery-ui.css" />
 	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js"></script>
-	<script src="Chart.js"></script>
-	<script>
-			var userName;
+	<script src="js/Chart.js"></script>
+	<script src="js/app.js"></script>
 
-			function submitName(){
-				userName = document.getElementById('welcome-name').value;
-				$("#welcome-message h2").append(userName);
-				$("#welcome-enter-name").hide();
-				$("#welcome-message").show();
-
-				// localStorage.setItem("localName", JSON.stringify(userName)); PUT BACK IN LATER
-			}
-
-			function submitTarget(){
-				userDistance = document.getElementById('target-distance').value;
-				userTimeHours = document.getElementById('target-time-hours').value;
-				userTimeMinutes = document.getElementById('target-time-minutes').value;
-				userDistanceUnitKM = document.getElementById('km').value;
-				userDistanceUnitMile = document.getElementById('miles').value;
-				userDistanceUnitM = document.getElementById('m').value;
-
-				console.log(userDistanceUnitKM);
-				console.log(userDistanceUnitMile);
-				console.log(userDistanceUnitM);
-
-				// NEEEED TO FIX!!
-
-				if (typeof userDistanceUnitKM != undefined){
-					userDistanceUnit = userDistanceUnitKM;
-				}
-				else if (typeof userDistanceUnitMile != undefined){
-					userDistanceUnit = userDistanceUnitMile;
-				}
-				else if (typeof userDistanceUnitM != undefined){
-					userDistanceUnit = userDistanceUnitM;
-				}
-
-
-				$('#target').hide();
-				$('#results').show();
-				$('#graph').show();
-				$('body').css('-webkit-animation', 'changeColour2 1s').css('background', '#DD9050');
-
-				timeMinsToHours = userTimeMinutes / 60;
-				totalTime = parseFloat(userTimeHours) + parseFloat(timeMinsToHours);
-
-				var speed = userDistance / totalTime;
-				$('#results-speed').append(speed + userDistanceUnit + '/h');
-
-				$('#results-distance').append(userDistance + userDistanceUnit);
-				$('#results-time').append(userTimeHours + 'h ').append(userTimeMinutes + 'mins');
-
-				var timePerUnit = (totalTime / userDistance) * 60;
-				var timePerUnitFixed = timePerUnit.toFixed(2);
-				$('#results-timePerUnit').append(userDistanceUnit + ': ' + timePerUnitFixed + ' minutes');
-			}
-
-			var i=0;
-			var labelArray = [];
-			var userTimesArray = [];345
-			function submitSaveTimes(){
-				userTimes = document.getElementById('results-user-time').value;
-				userTimesArray.push(userTimes);
-				console.log(userTimesArray);
-				document.getElementById('user-times-list').innerHTML += '<li>' + userTimesArray[i] + '</li>';
-				i++;
-				labelArray.push(i);
-				$('#results-user-time').val("");
-
-				drawChart();
-				return userTimesArray;
-			}
-
-
-			// Continue
-
-			$('.continue').click(function(){
-				$('#welcome').hide();
-				$('#target').show();
-				$('body').css('-webkit-animation', 'changeColour 1s').css('background', '#308585');
-			});
-
-
-			//Radio Buttons
-
-			$('#target-radio input:radio').addClass('input_hidden');
-			$('#target-radio label').click(function() {
-			    $(this).addClass('selected').siblings().removeClass('selected');
-			});
-
-
-			//GRAPH
-			
-			var graphLabel;
-
-			var ctx = document.getElementById("runningChart").getContext("2d");
-			
-			var data = {
-			    labels: labelArray,
-			    datasets: [
-			        {
-			            label: "Running Times",
-			            fillColor: "rgba(220,220,220,0.2)",
-			            strokeColor: "rgba(220,220,220,1)",
-			            pointColor: "rgba(220,220,220,1)",
-			            pointStrokeColor: "#fff",
-			            pointHighlightFill: "#fff",
-			            pointHighlightStroke: "rgba(220,220,220,1)",
-			            data: userTimesArray
-			        }
-			    ]
-			};
-
-
-			var options ={
-
-			    ///Boolean - Whether grid lines are shown across the chart
-			    scaleShowGridLines : true,
-
-			    //String - Colour of the grid lines
-			    scaleGridLineColor : "rgba(255,255,255,.08)",
-
-			    //Number - Width of the grid lines
-			    scaleGridLineWidth : 1,
-
-			    //Boolean - Whether the line is curved between points
-			    bezierCurve : true,
-
-			    //Number - Tension of the bezier curve between points
-			    bezierCurveTension : 0.4,
-
-			    //Boolean - Whether to show a dot for each point
-			    pointDot : true,
-
-			    //Number - Radius of each point dot in pixels
-			    pointDotRadius : 4,
-
-			    //Number - Pixel width of point dot stroke
-			    pointDotStrokeWidth : 1,
-
-			    //Number - amount extra to add to the radius to cater for hit detection outside the drawn point
-			    pointHitDetectionRadius : 20,
-
-			    //Boolean - Whether to show a stroke for datasets
-			    datasetStroke : true,
-
-			    //Number - Pixel width of dataset stroke
-			    datasetStrokeWidth : 2,
-
-			    //Boolean - Whether to fill the dataset with a colour
-			    datasetFill : true,
-
-			    responsive: true,
-
-			    scaleLineColor: "rgba(255,255,255,.8)",
-
-			    scaleFontColor: "#fff",
-
-			    tooltipFontFamily: "Open Sans",
-
-			    tooltipFontSize: 16,
-
-			};
-
-			function drawChart(){
-				if(labelArray.length > 1){
-					$('#p-graph').hide();
-					var myLineChart = new Chart(ctx).Line(data, options);
-				}
-			}
-
-			
-		
-
-		</script>
-
-
-
-
-
-<script>
-		// 	var localarray;
-		// 	var array = [];
-		// 	var x = 0;
-		// 	var fullArray;
-		// 	var localArrayRetrieved;
-		// 	function submitFunction(){
-				
-		// 		var thing = document.getElementById('thing').value;
-		// 		array.push(thing);
-		// 		document.getElementById('blah').innerHTML += '<li>' + array[x] + '</li>';
-		// 		x++;
-
-		// 		if (typeof(localArrayRetrieved) != 'undefined'){
-		// 			fullArray = localArrayRetrieved.concat(array);
-		// 		} else {
-		// 			fullArray = array;
-		// 		}
-
-		// 		localStorage.setItem("localarray", JSON.stringify(fullArray));
-		// 		$('#thing').val("");
-		// 	}
-
-		// 	if (typeof(Storage) != "undefined") {
-		// 		if (typeof(localStorage.localarray) != "undefined"){
-		// 			localArrayRetrieved = JSON.parse(localStorage.localarray);
-		// 			for (i = 0; i < localArrayRetrieved.length; i++){
-		// 				document.getElementById('blah').innerHTML += '<li>' + localArrayRetrieved[i] + '</li>';
-		// 			}
-		// 		}
-
-		// 	} else {
-		// 	    document.getElementById("result").innerHTML = "Sorry, your browser does not support Web Storage...";
-		// 	}
-
-		// 	var resetFunction = function(){
-		// 		localStorage.clear();
-		// 		array.length = 0;
-		// 		$('#blah').empty();
-		// 		x = 0;
-		// 	}
-
-		// 
-</script>
+	
 	</body>
 </html>
