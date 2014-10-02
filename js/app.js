@@ -10,6 +10,7 @@ var userTimesArrayList = [];
 var localName;
 var userTimesArrayEdited;
 
+var blah;
 
 //LOCAL
 var localNameRet;
@@ -48,23 +49,6 @@ else{
 
 
 // TARGET VIEW - SUBMIT DATA
-function targetView(){
-if (typeof(localStorage.localDistance) != "undefined" && typeof(localStorage.localTimeHours) != "undefined" && typeof(localStorage.localTimeMinutes) != "undefined" && typeof(localStorage.localDistanceUnit) != "undefined"){
-  localDistanceRet = localStorage.localDistance;
-  localTimeHoursRet = localStorage.localTimeHours;
-  localTimeMinutesRet = localStorage.localTimeMinutes;
-  localDistanceRet = localStorage.localDistanceUnit;
-
-  $('#target').hide();
-  $('#results').show();
-  $('#graph').show();
-  $('body').css('-webkit-animation', 'changeColour2 1s').css('background', '#DD9050');
-  }
-  else{
-    return false;
-  }
-}
-
 function submitTarget(){
   userDistance = document.getElementById('target-distance').value;
   userTimeHours = document.getElementById('target-time-hours').value;
@@ -118,6 +102,60 @@ function submitTarget(){
 }
 
 
+//Local check for targets
+function targetView(){
+  if (typeof(localStorage.localDistance) != "undefined" && typeof(localStorage.localTimeHours) != "undefined" && typeof(localStorage.localTimeMinutes) != "undefined" && typeof(localStorage.localDistanceUnit) != "undefined"){
+    localDistanceRet = localStorage.localDistance;
+    localTimeHoursRet = localStorage.localTimeHours;
+    localTimeMinutesRet = localStorage.localTimeMinutes;
+    localDistanceUnitRet = localStorage.localDistanceUnit;
+
+    timeMinsToHours = localTimeMinutesRet / 60;
+    totalTime = parseFloat(localTimeHoursRet) + parseFloat(timeMinsToHours);
+
+    var speed = localDistanceRet / totalTime;
+    var speedFixed = speed.toFixed(2);
+    $('#results-speed').append(speedFixed + localDistanceUnitRet + '/h');
+
+    $('#results-distance').append(localDistanceRet + localDistanceUnitRet);
+    $('#results-time').append(localTimeHoursRet + 'h ').append(localTimeMinutesRet + 'mins');
+
+    var timePerUnit = (totalTime / localDistanceRet) * 60;
+    var timePerUnitFixed = timePerUnit.toFixed(2);
+    $('#results-timePerUnit').append(localDistanceUnitRet + ': ' + timePerUnitFixed + ' minutes');
+
+    $('#target').hide();
+    $('#results').show();
+    $('#graph').show();
+    $('body').css('-webkit-animation', 'changeColour2 1s').css('background', '#DD9050');
+
+    if(typeof(localStorage.localDateArray) != "undefined" && typeof(localStorage.localTimesArrayList) != "undefined" && typeof(localStorage.localTimesArray) != "undefined"){
+      
+      userDateArray = JSON.parse(localStorage.localDateArray);
+      userTimesArrayList = JSON.parse(localStorage.localTimesArrayList);
+      userTimesArray = JSON.parse(localStorage.localTimesArray);
+
+
+      console.log(userDateArray);
+      console.log(userTimesArrayList);
+      console.log(userTimesArray);
+
+    
+      return userDateArray;
+      return userTimesArray;
+      return userTimesArrayList;
+
+      drawChart();
+    }
+    
+    
+  }
+  else{
+    return false;
+  }
+}
+
+
 // SUBMIT TIMES
 
 function submitSaveTimes(){
@@ -138,6 +176,7 @@ function submitSaveTimes(){
 
   if(userDate !== "" && userTimes !== "" && userTimes !== "0:00:00"){
     userDateArray.push(userDate);
+    console.log(userDateArray.length);
     userTimesArrayList.push(userTimeForList);
     userTimesArray.push(userTimes);
 
@@ -157,15 +196,9 @@ function submitSaveTimes(){
     $('#target-time-hours').removeClass('required');
     $('#target-time-minutes').removeClass('required');
 
-
-    localStorage.setItem("localDateArray", userDateArray);
-    console.log(localStorage.localDateArray);   
-
-    localStorage.setItem("localTimesArrayList", userTimesArrayList);
-    console.log(localStorage.localTimesArrayList);   
-
-    localStorage.setItem("localTimesArray", userTimesArray);
-    console.log(localStorage.localTimesArray); 
+    localStorage.setItem("localDateArray", JSON.stringify(userDateArray));
+    localStorage.setItem("localTimesArrayList", JSON.stringify(userTimesArrayList));
+    localStorage.setItem("localTimesArray", JSON.stringify(userTimesArray));
 
     drawChart();
     return userTimesArray;
@@ -177,6 +210,7 @@ function submitSaveTimes(){
   }
 
 }
+
 
 //GRAPH
 function graphTimes(){
