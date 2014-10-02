@@ -10,7 +10,7 @@ var userTimesArrayList = [];
 var localName;
 var userTimesArrayEdited;
 
-var blah;
+var noOfEntries;
 
 //LOCAL
 var localNameRet;
@@ -135,24 +135,27 @@ function targetView(){
       userTimesArrayList = JSON.parse(localStorage.localTimesArrayList);
       userTimesArray = JSON.parse(localStorage.localTimesArray);
 
+      noOfEntries = userDateArray.length;
+
+      for(x=0; x < noOfEntries; x++){
+        document.getElementById('user-date-list').innerHTML += '<li>' + userDateArray[i] + '</li>';
+        document.getElementById('user-times-list').innerHTML += '<li>' + userTimesArrayList[i] + '</li>';
+      }
+
+
 
       console.log(userDateArray);
       console.log(userTimesArrayList);
       console.log(userTimesArray);
 
-    
-      return userDateArray;
-      return userTimesArray;
-      return userTimesArrayList;
-
       drawChart();
-    }
-    
-    
+  
+    }    
   }
   else{
     return false;
   }
+
 }
 
 
@@ -183,14 +186,12 @@ function submitSaveTimes(){
     document.getElementById('user-date-list').innerHTML += '<li>' + userDateArray[i] + '</li>';
     document.getElementById('user-times-list').innerHTML += '<li>' + userTimesArrayList[i] + '</li>';
     
-    // CHECK IF STILL NEED!!
-    i++;
-    labelArray.push(i);
+    noOfEntries = userDateArray.length;
 
     $('#datepicker').val("");
-    $('#results-user-time-hour').val("");
-    $('#results-user-time-min').val("");
-    $('#results-user-time-sec').val("");
+    $('#results-user-time-hour').val("00");
+    $('#results-user-time-min').val("00");
+    $('#results-user-time-sec').val("00");
 
     $('#target-distance').removeClass('required');
     $('#target-time-hours').removeClass('required');
@@ -272,7 +273,8 @@ function graphTimes(){
 
 //Checks no. of times and calls graphTimes
 function drawChart(){
-  if(labelArray.length > 1){
+  console.log('HERE!')
+  if(noOfEntries > 1){
     $('#p-graph').hide();
     graphTimes();
   }
