@@ -1,3 +1,4 @@
+@import url(normalize.css);
 @import url(http://fonts.googleapis.com/css?family=Open+Sans);
 @import url(http://fonts.googleapis.com/css?family=Lobster);
 body {
@@ -298,5 +299,75 @@ section {
     background: #DD5050; }
   to {
     background: #DD9050; } }
+@media only screen and (min-width: 768px) and (max-width: 1024px) {
+  h1 {
+    font-size: 9em; }
+
+  h2 {
+    font-size: 10em; }
+
+  input {
+    font-size: 1.2em; }
+
+  #forget {
+    margin: 1em 1em;
+    width: 7%;
+    font-size: 0.6em;
+    height: 30px; }
+
+  #results {
+    width: 90%;
+    margin: 0 auto; }
+
+  #graph {
+    width: 90%;
+    margin: 0 auto; } }
+@media only screen and (min-width: 320px) and (max-width: 768px) {
+  h1 {
+    font-size: 4.7em; }
+
+  h2 {
+    font-size: 6em; }
+
+  h5 {
+    font-size: 3em;
+    text-align: center; }
+
+  input {
+    font-size: 1.1em;
+    width: 100%; }
+
+  #forget {
+    margin: 1em 1em;
+    width: 15%;
+    font-size: 0.6em;
+    height: 21px; }
+
+  #target {
+    width: 80%; }
+
+  .results-column {
+    display: block;
+    width: 100%;
+    margin: 0 auto;
+    margin-bottom: 5%; }
+
+  .results-stats {
+    display: block;
+    margin: 0 auto;
+    width: 80%;
+    padding: 0; }
+
+  .hr-vertical {
+    display: none; }
+
+  #user-date-list {
+    width: 19%; }
+
+  #graph {
+    margin-top: 1%; }
+
+  #p-graph {
+    text-align: center; } }
 
 /*# sourceMappingURL=style.css.map */
