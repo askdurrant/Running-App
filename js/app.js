@@ -10,7 +10,7 @@ var userTimesArrayList = [];
 var localName;
 var userTimesArrayEdited;
 
-var noOfEntries;
+var noOfEntries = 0;
 
 //LOCAL
 var localNameRet;
@@ -138,11 +138,9 @@ function targetView(){
       noOfEntries = userDateArray.length;
 
       for(x=0; x < noOfEntries; x++){
-        document.getElementById('user-date-list').innerHTML += '<li>' + userDateArray[i] + '</li>';
-        document.getElementById('user-times-list').innerHTML += '<li>' + userTimesArrayList[i] + '</li>';
+        document.getElementById('user-date-list').innerHTML += '<li>' + userDateArray[x] + '</li>';
+        document.getElementById('user-times-list').innerHTML += '<li>' + userTimesArrayList[x] + '</li>';
       }
-
-
 
       console.log(userDateArray);
       console.log(userTimesArrayList);
@@ -183,8 +181,8 @@ function submitSaveTimes(){
     userTimesArrayList.push(userTimeForList);
     userTimesArray.push(userTimes);
 
-    document.getElementById('user-date-list').innerHTML += '<li>' + userDateArray[i] + '</li>';
-    document.getElementById('user-times-list').innerHTML += '<li>' + userTimesArrayList[i] + '</li>';
+    document.getElementById('user-date-list').innerHTML += '<li>' + userDateArray[noOfEntries] + '</li>';
+    document.getElementById('user-times-list').innerHTML += '<li>' + userTimesArrayList[noOfEntries] + '</li>';
     
     noOfEntries = userDateArray.length;
 
